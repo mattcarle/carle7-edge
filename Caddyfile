@@ -1,0 +1,39 @@
+# SITE_ADDRESS defaults to "localhost" for local testing (Caddy issues a locally-trusted cert
+# for it automatically). For a real deployment, set SITE_ADDRESS in the .env file next to
+# docker-compose.yml - Caddy then obtains and renews a real Let's Encrypt certificate for it on
+# its own, as long as DNS points here and ports 80/443 are reachable from the internet.
+#
+# This is the only container on the host that binds 80/443 or does TLS. Every app (energytracker,
+# and any future ones) runs its own backend + static-file Caddy behind this one, reachable only on
+# the shared `carle7-edge` Docker network, and gets a path prefix here. To add a new app once it
+# exists: give it a `handle /<name>` + `handle /<name>/*` pair below pointing at its container's
+# network alias on `carle7-edge` (see that app's own docker-compose.yml), and a link on
+# site/index.html.
+
+# www redirects to the bare domain rather than being served as an equal second hostname, so
+# there's one canonical URL instead of two hostnames browsers/search engines would otherwise
+# treat as separate sites. Needs its own DNS record pointing here - Caddy issues it a separate
+# Let's Encrypt cert automatically, same as the primary domain.
+www.{$SITE_ADDRESS:localhost} {
+	redir * https://{$SITE_ADDRESS:localhost}{uri} 308
+}
+
+{$SITE_ADDRESS:localhost} {
+	encode gzip
+
+	# energytracker handles its own /energytracker/* static assets and /energytracker/api/*
+	# backend proxying internally (see its own frontend/Caddyfile) - forwarded here unmodified.
+	handle /energytracker {
+		redir * /energytracker/ 308
+	}
+
+	handle /energytracker/* {
+		reverse_proxy energytracker:80
+	}
+
+	# Falls through to the landing page for everything not claimed by an app above.
+	handle {
+		root * /srv
+		file_server
+	}
+}

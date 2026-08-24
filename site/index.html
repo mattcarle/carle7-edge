@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>carle7.com</title>
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #0f1115;
+    --card: #171a21;
+    --border: #2a2e37;
+    --text: #e6e8eb;
+    --text-dim: #9aa1ac;
+    --accent: #6ea8fe;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    color: var(--text);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  main {
+    width: 100%;
+    max-width: 420px;
+    padding: 24px;
+  }
+  h1 {
+    font-size: 22px;
+    margin: 0 0 24px;
+    font-weight: 600;
+  }
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  a.app-link {
+    display: block;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--card);
+    color: var(--text);
+    text-decoration: none;
+    font-size: 15px;
+    transition: border-color 0.15s ease;
+  }
+  a.app-link:hover {
+    border-color: var(--accent);
+  }
+  .app-link span {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+</style>
+</head>
+<body>
+<main>
+  <h1>carle7.com</h1>
+  <ul>
+    <li>
+      <a class="app-link" href="/energytracker/">
+        Energy Tracker
+        <span>Electricity &amp; gas usage tracking</span>
+      </a>
+    </li>
+  </ul>
+</main>
+</body>
+</html>

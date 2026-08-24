@@ -1,0 +1,29 @@
+services:
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-localhost}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./site:/srv:ro
+      # Caddy's own state (ACME account + issued certs) - keep this, or a restart re-requests
+      # certificates and can hit Let's Encrypt's rate limits.
+      - caddy-data:/data
+      - caddy-config:/config
+    networks:
+      - carle7-edge
+
+networks:
+  # Named (not project-prefixed) so every app's own docker-compose.yml can attach to it as an
+  # `external: true` network under this same literal name. Bring this stack up first - other
+  # apps' `docker compose up` fails until this network exists.
+  carle7-edge:
+    name: carle7-edge
+
+volumes:
+  caddy-data:
+  caddy-config:
