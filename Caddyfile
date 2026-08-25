@@ -31,6 +31,16 @@ www.{$SITE_ADDRESS:localhost} {
 		reverse_proxy energytracker:80
 	}
 
+	# A second, independent instance of the same app (own database, own Octopus account) - see
+	# its docker-compose.yml's app2/caddy2 services.
+	handle /energytracker2 {
+		redir * /energytracker2/ 308
+	}
+
+	handle /energytracker2/* {
+		reverse_proxy energytracker2:80
+	}
+
 	# Falls through to the landing page for everything not claimed by an app above.
 	handle {
 		root * /srv

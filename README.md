@@ -37,3 +37,11 @@ pattern), add it here:
 2. Add a link to `site/index.html`.
 3. `docker compose up -d` (no rebuild needed for the Caddyfile/site change - Caddy reloads from
    the bind-mounted files; `docker compose restart caddy` if it doesn't pick it up automatically).
+
+## A second instance of an existing app
+
+energytracker supports running a second, independent instance of itself (own database, own
+Octopus account) at `/energytracker2` - see its own `docker-compose.yml` (`app2`/`caddy2`
+services) and `frontend/Caddyfile` (`$APP_PATH`/`$APP_UPSTREAM`) for how that's parameterized.
+Routing it here follows the exact same pattern as adding a new app (above), just pointed at the
+`energytracker2` network alias instead of a new app's.
