@@ -41,6 +41,17 @@ www.{$SITE_ADDRESS:localhost} {
 		reverse_proxy energytracker2:80
 	}
 
+	# wordwang handles its own /wordwang/* static assets, /wordwang/api/* backend proxying, and
+	# /wordwang/ws (STOMP/SockJS) internally (see its own frontend/Caddyfile) - forwarded here
+	# unmodified.
+	handle /wordwang {
+		redir * /wordwang/ 308
+	}
+
+	handle /wordwang/* {
+		reverse_proxy wordwang:80
+	}
+
 	# Falls through to the landing page for everything not claimed by an app above.
 	handle {
 		root * /srv

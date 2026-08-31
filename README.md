@@ -2,8 +2,9 @@
 
 The single reverse proxy for everything on carle7.com. It's the only container on the host that
 binds ports 80/443 or terminates TLS; every app running on this host (currently
-[energytracker](https://github.com/mattcarle/energytracker)) runs its own backend + static-file
-Caddy behind this one, reachable only on the shared `carle7-edge` Docker network, and gets a path
+[energytracker](https://github.com/mattcarle/energytracker) and
+[wordwang](https://github.com/mattcarle/wordwang)) runs its own backend + static-file Caddy
+behind this one, reachable only on the shared `carle7-edge` Docker network, and gets a path
 prefix here (e.g. `/energytracker/`). The bare domain (`/`) serves a small landing page
 (`site/index.html`) linking to whichever apps are deployed.
 
